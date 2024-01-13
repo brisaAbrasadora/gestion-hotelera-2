@@ -2,7 +2,6 @@ const express = require("express");
 
 const Habitacion = require("../models/habitacion");
 const Limpieza = require("../models/limpieza");
-const auth = require("../auth/auth");
 
 const router = express.Router();
 
