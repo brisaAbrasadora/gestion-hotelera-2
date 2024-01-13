@@ -5,6 +5,7 @@ const auth = require("../auth/auth");
 
 const router = express.Router();
 
+// GET all cleanings
 router.get("/:id", async (req, res) => {
   try {
     const limpiezas = await Limpieza.find({ idHabitacion: req.params.id }).sort(
@@ -23,6 +24,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+// GET room cleaning
 router.get("/:id/estadolimpieza", async (req, res) => {
   try {
     const ultimaLimpieza = await Limpieza.find({ idHabitacion: req.params.id })
@@ -39,7 +41,8 @@ router.get("/:id/estadolimpieza", async (req, res) => {
   }
 });
 
-router.post("/:id", auth.protegerRuta, async (req, res) => {
+// POST new cleaning to a room
+router.post("/:id", async (req, res) => {
   const limpieza = new Limpieza({
     idHabitacion: req.params.id,
     observaciones: req.body.observaciones,

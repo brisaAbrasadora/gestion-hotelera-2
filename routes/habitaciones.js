@@ -6,6 +6,7 @@ const auth = require("../auth/auth");
 
 const router = express.Router();
 
+// GET all rooms
 router.get("/", async (req, res) => {
   try {
     const habitaciones = await Habitacion.find();
@@ -22,6 +23,7 @@ router.get("/", async (req, res) => {
   }
 });
 
+// GET a room
 router.get("/:id", async (req, res) => {
   try {
     const habUnica = await Habitacion.findById(req.params.id);
@@ -36,7 +38,8 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.post("/", auth.protegerRuta, (req, res) => {
+// POST new room
+router.post("/", (req, res) => {
   const habNueva = new Habitacion({
     numero: req.body.numero,
     tipo: req.body.tipo,
@@ -59,6 +62,7 @@ router.post("/", auth.protegerRuta, (req, res) => {
     });
 });
 
+// UPDATE new and latest cleaning of every room
 router.put("/ultimaLimpieza", async (req, res) => {
   try {
     const habitaciones = await Habitacion.find();
@@ -90,7 +94,8 @@ router.put("/ultimaLimpieza", async (req, res) => {
   }
 });
 
-router.put("/:id", auth.protegerRuta, async (req, res) => {
+// UPDATE a room 
+router.put("/:id", async (req, res) => {
   try {
     const habActualizada = await Habitacion.findByIdAndUpdate(
       req.params.id,
@@ -119,7 +124,8 @@ router.put("/:id", auth.protegerRuta, async (req, res) => {
   }
 });
 
-router.delete("/:id", auth.protegerRuta, async (req, res) => {
+// DELETE a room
+router.delete("/:id", async (req, res) => {
   try {
     const habBorrada = await Habitacion.findByIdAndDelete(req.params.id);
 
@@ -133,7 +139,8 @@ router.delete("/:id", auth.protegerRuta, async (req, res) => {
   }
 });
 
-router.post("/:id/incidencias", auth.protegerRuta, async (req, res) => {
+// POST a new incidence
+router.post("/:id/incidencias", async (req, res) => {
   try {
     const incidenciaNueva = {
       descripcion: req.body.descripcion,
@@ -155,7 +162,8 @@ router.post("/:id/incidencias", auth.protegerRuta, async (req, res) => {
   }
 });
 
-router.put("/:idH/incidencias/:idI", auth.protegerRuta, async (req, res) => {
+// UPDATE incidence
+router.put("/:idH/incidencias/:idI", async (req, res) => {
   try {
     const hab = await Habitacion.findById(req.params.idH);
 
@@ -195,7 +203,8 @@ router.put("/:idH/incidencias/:idI", auth.protegerRuta, async (req, res) => {
   }
 });
 
-router.put("/:id/ultimalimpieza", auth.protegerRuta, async (req, res) => {
+// UPDATE latest cleaning of a room
+router.put("/:id/ultimalimpieza", async (req, res) => {
   try {
     const ultimaLimpieza = await Limpieza.find({ idHabitacion: req.params.id })
       .sort("-fechaHora")
