@@ -1,0 +1,290 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "Hotel",
+    "dateExported": "2023-11-29T22:45:56.625Z",
+    "version": "1.1",
+    "folders": [
+        {
+            "_id": "4bf5136c-5763-4f5a-95e9-4e37dec28a88",
+            "name": "Habitaciones",
+            "containerId": "",
+            "created": "2023-11-24T11:54:14.392Z",
+            "sortNum": 10000
+        },
+        {
+            "_id": "9e9dd938-c6e6-4ea2-a714-f0bebd9d1159",
+            "name": "Limpiezas",
+            "containerId": "",
+            "created": "2023-11-28T00:15:36.723Z",
+            "sortNum": 20000
+        }
+    ],
+    "requests": [
+        {
+            "_id": "d087bf6b-835f-43d2-93d8-5336fa52c9e1",
+            "colId": "800c2226-8483-4733-951c-4a448127cf73",
+            "containerId": "4bf5136c-5763-4f5a-95e9-4e37dec28a88",
+            "name": "Todas las habitaciones",
+            "url": "localhost:8080/habitaciones",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2023-11-24T11:54:28.840Z",
+            "modified": "2023-11-29T22:45:28.810Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "7879598b-1b78-488a-91c6-d29e83d79ef9",
+            "colId": "800c2226-8483-4733-951c-4a448127cf73",
+            "containerId": "4bf5136c-5763-4f5a-95e9-4e37dec28a88",
+            "name": "Una habitacion",
+            "url": "localhost:8080/habitaciones/{{idH}}",
+            "method": "GET",
+            "sortNum": 20000,
+            "created": "2023-11-24T13:11:01.363Z",
+            "modified": "2023-11-29T20:24:10.012Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "532cb031-106d-4f17-91db-4f3287835818",
+            "colId": "800c2226-8483-4733-951c-4a448127cf73",
+            "containerId": "4bf5136c-5763-4f5a-95e9-4e37dec28a88",
+            "name": "Insertar una habitacion",
+            "url": "localhost:8080/habitaciones",
+            "method": "POST",
+            "sortNum": 30000,
+            "created": "2023-11-24T13:17:49.736Z",
+            "modified": "2023-11-29T20:27:32.725Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "{{token}}"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"numero\":88,\n  \"tipo\":\"suite\",\n  \"descripcion\":\"Gran salon, dos habitaciones individuales\",\n  \"precio\":80\n}",
+                "form": []
+            },
+            "tests": [
+                {
+                    "type": "set-env-var",
+                    "custom": "json.resultado._id",
+                    "action": "setto",
+                    "value": "{{idH}}"
+                }
+            ]
+        },
+        {
+            "_id": "bbd21832-33f4-4bf4-8f74-06dd233140fd",
+            "colId": "800c2226-8483-4733-951c-4a448127cf73",
+            "containerId": "4bf5136c-5763-4f5a-95e9-4e37dec28a88",
+            "name": "Actualizar datos habitacion",
+            "url": "localhost:8080/habitaciones/{{idH}}",
+            "method": "PUT",
+            "sortNum": 40000,
+            "created": "2023-11-24T13:29:14.366Z",
+            "modified": "2023-11-29T20:24:27.384Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "{{token}}"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"numero\":707\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "57fbff29-7e34-4b63-88fc-d1acf5f62a39",
+            "colId": "800c2226-8483-4733-951c-4a448127cf73",
+            "containerId": "4bf5136c-5763-4f5a-95e9-4e37dec28a88",
+            "name": "Eliminar habitacion",
+            "url": "localhost:8080/habitaciones/{{idH}}",
+            "method": "DELETE",
+            "sortNum": 50000,
+            "created": "2023-11-24T13:33:42.126Z",
+            "modified": "2023-11-29T20:24:34.478Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "{{token}}"
+                }
+            ],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "4a2a2660-7762-4205-9103-4ff1ddf630aa",
+            "colId": "800c2226-8483-4733-951c-4a448127cf73",
+            "containerId": "4bf5136c-5763-4f5a-95e9-4e37dec28a88",
+            "name": "Añadir incidencia en una habitacion",
+            "url": "localhost:8080/habitaciones/{{idH}}/incidencias",
+            "method": "POST",
+            "sortNum": 70000,
+            "created": "2023-11-24T17:57:34.071Z",
+            "modified": "2023-11-29T20:38:53.525Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "{{token}}"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"descripcion\":\"Techo roto\"\n}",
+                "form": []
+            },
+            "tests": [
+                {
+                    "type": "set-env-var",
+                    "custom": "json.resultado.incidencias[0]._id",
+                    "action": "setto",
+                    "value": "{{idI}}"
+                }
+            ]
+        },
+        {
+            "_id": "93a2710a-95a9-4f7c-b88f-58ecd316e560",
+            "colId": "800c2226-8483-4733-951c-4a448127cf73",
+            "containerId": "4bf5136c-5763-4f5a-95e9-4e37dec28a88",
+            "name": "Actualizar estado incidencia de habitacion",
+            "url": "localhost:8080/habitaciones/65609e34d9e5da6d4e134ee1/incidencias/6565183fad4f75dff3b745f3",
+            "method": "PUT",
+            "sortNum": 90000,
+            "created": "2023-11-25T19:14:09.798Z",
+            "modified": "2023-11-29T18:36:38.091Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "{{token}}"
+                }
+            ],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "2525b63f-50fc-4b2c-8433-58932706e1ff",
+            "colId": "800c2226-8483-4733-951c-4a448127cf73",
+            "containerId": "4bf5136c-5763-4f5a-95e9-4e37dec28a88",
+            "name": "Actualizar ultima limpieza",
+            "url": "localhost:8080/habitaciones/{{idH}}/ultimalimpieza",
+            "method": "PUT",
+            "sortNum": 110000,
+            "created": "2023-11-26T13:01:49.572Z",
+            "modified": "2023-11-29T20:25:34.381Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "{{token}}"
+                }
+            ],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "e0c2b7f0-7c50-4497-954e-4a99626a9bdf",
+            "colId": "800c2226-8483-4733-951c-4a448127cf73",
+            "containerId": "4bf5136c-5763-4f5a-95e9-4e37dec28a88",
+            "name": "Actualizar todas las ultimas limpiezas\\",
+            "url": "localhost:8080/habitaciones/ultimalimpieza",
+            "method": "PUT",
+            "sortNum": 130000,
+            "created": "2023-11-26T21:10:01.197Z",
+            "modified": "2023-11-26T21:16:31.221Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "bfd938ba-cb85-42df-b4b3-5586316bc4a8",
+            "colId": "800c2226-8483-4733-951c-4a448127cf73",
+            "containerId": "9e9dd938-c6e6-4ea2-a714-f0bebd9d1159",
+            "name": "Obtener limpiezas de una habitacion",
+            "url": "localhost:8080/limpiezas/{{idH}}",
+            "method": "GET",
+            "sortNum": 140000,
+            "created": "2023-11-28T00:15:47.437Z",
+            "modified": "2023-11-29T20:25:44.491Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "2de6b2ca-1755-420a-b30d-5bf3bf0be011",
+            "colId": "800c2226-8483-4733-951c-4a448127cf73",
+            "containerId": "9e9dd938-c6e6-4ea2-a714-f0bebd9d1159",
+            "name": "Obtener el estado de limpieza actual de una habitacion",
+            "url": "localhost:8080/limpiezas/{{idH}}/estadolimpieza",
+            "method": "GET",
+            "sortNum": 150000,
+            "created": "2023-11-28T10:39:15.492Z",
+            "modified": "2023-11-29T20:25:50.150Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "1e6fa139-6514-4847-a8a1-e1911bf8627a",
+            "colId": "800c2226-8483-4733-951c-4a448127cf73",
+            "containerId": "9e9dd938-c6e6-4ea2-a714-f0bebd9d1159",
+            "name": "Actualizar limpieza",
+            "url": "localhost:8080/limpiezas/{{idH}}",
+            "method": "POST",
+            "sortNum": 160000,
+            "created": "2023-11-28T10:51:52.704Z",
+            "modified": "2023-11-29T22:11:27.105Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "{{token}}"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"observaciones\":\"Test estado limpieza3\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "d03a8552-87ca-4c4e-b4e5-d6e83dbb2e46",
+            "colId": "800c2226-8483-4733-951c-4a448127cf73",
+            "containerId": "",
+            "name": "Loguear un usuario",
+            "url": "localhost:8080/auth/login",
+            "method": "POST",
+            "sortNum": 170000,
+            "created": "2023-11-29T10:31:46.462Z",
+            "modified": "2023-11-29T18:33:28.040Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"login\":\"Dani\",\n  \"password\":\"1234567\"\n}",
+                "form": []
+            },
+            "tests": [
+                {
+                    "type": "set-env-var",
+                    "custom": "json.resultado",
+                    "action": "setto",
+                    "value": "{{token}}"
+                }
+            ]
+        }
+    ],
+    "settings": {
+        "envId": "5624fe9b-3428-43bc-b604-7cdd07cea08f"
+    }
+}

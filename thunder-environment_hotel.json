@@ -1,0 +1,21 @@
+{
+    "client": "Thunder Client",
+    "environmentName": "hotel",
+    "dateExported": "2023-11-29T22:46:18.039Z",
+    "version": "1.0",
+    "envFile": "c:\\Users\\Daniel\\Documents\\Clase\\Despliegue\\ProyectosNode\\Practicas\\Practica 1\\.env",
+    "variables": [
+        {
+            "name": "idH",
+            "value": ""
+        },
+        {
+            "name": "idI",
+            "value": ""
+        },
+        {
+            "name": "token",
+            "value": ""
+        }
+    ]
+}

@@ -1,0 +1,18 @@
+{
+  "name": "gestion-hotelera-web",
+  "version": "1.0.0",
+  "description": "Desarrollo de una aplicación web completa para la gestión de incidencias y limpieza de las habitaciones de un hotel con Express y Mongoose con un motor de plantillas",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "author": "Daniel Rabago Prades",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.0.1"
+  }
+}
