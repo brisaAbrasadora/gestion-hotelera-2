@@ -27,10 +27,10 @@ router.get("/:id", async (req, res) => {
     if (habUnica) {
       res.render("habitaciones_ficha", {habitacion: habUnica});
     } else {
-      throw Error;
+      throw Error("No existe el número de habitación");
     }
   } catch (error) {
-    res.status(400).send({ error: "No existe el número de habitación" });
+    res.render("error", {error: error});
   }
 });
 
