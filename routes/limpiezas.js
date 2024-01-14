@@ -1,6 +1,7 @@
 const express = require("express");
 
 const Limpieza = require("../models/limpieza");
+const Habitacion = require("../models/habitacion");
 
 
 const router = express.Router();
@@ -11,16 +12,15 @@ router.get("/:id", async (req, res) => {
     const limpiezas = await Limpieza.find({ idHabitacion: req.params.id }).sort(
       "-fechaHora"
     );
+    const numHabitacion = await Habitacion.findById(req.params.id).select("numero");
 
     if (limpiezas.length == 0) {
-      throw Error;
+      throw Error("No hay limpiezas registradas para esa habitación");
     }
 
-    res.status(200).send({ resultado: limpiezas });
+    res.render("limpiezas_listado", {limpiezas: limpiezas, habitacion: numHabitacion})
   } catch (error) {
-    res
-      .status(500)
-      .send({ error: "No hay limpiezas registradas para esa habitación" });
+    res.render("error", {error: error})
   }
 });
 

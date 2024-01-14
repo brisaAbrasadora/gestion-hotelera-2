@@ -9,16 +9,13 @@ const router = express.Router();
 router.get("/", async (req, res) => {
   try {
     const habitaciones = await Habitacion.find();
-
     if (habitaciones.length > 0) {
-      res.status(200).send({ resultado: habitaciones });
+    res.render("habitaciones_listado", {habitaciones: habitaciones, uri: "/habitaciones"});
     } else {
-      throw Error;
+      throw Error("No hay habitaciones");
     }
   } catch (error) {
-    res
-      .status(500)
-      .send({ error: "No hay habitaciones registradas en la aplicación." });
+        res.render("error", {error: error});
   }
 });
 
@@ -28,7 +25,7 @@ router.get("/:id", async (req, res) => {
     const habUnica = await Habitacion.findById(req.params.id);
 
     if (habUnica) {
-      res.status(200).send({ resultado: habUnica });
+      res.render("habitaciones_ficha", {habitacion: habUnica});
     } else {
       throw Error;
     }

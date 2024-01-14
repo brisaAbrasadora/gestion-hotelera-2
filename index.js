@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 const express = require("express");
 const nunjucks = require("nunjucks");
+const dateFilter = require("nunjucks-date-filter");
+
 require("dotenv").config();
 
 // Controllers
@@ -14,10 +16,13 @@ mongoose.connect(process.env.URL_BBDD);
 const app = express();
 
 // Configure Nunjucks engine
-nunjucks.configure("views", {
+const env = nunjucks.configure("views", {
     autoescape: true,
     express: app
 });
+
+// Add date filter
+env.addFilter("date", dateFilter);
 
 // Set template's engine
 app.set("view engine", "njk");
