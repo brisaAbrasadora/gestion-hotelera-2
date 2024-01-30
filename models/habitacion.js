@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const incidenciaSchema = new mongoose.Schema({
     descripcion: {
         type: String,
-        required: [true, "La descripcion es obligatoria."],
+        required: [true, "La descripcion de la incidencia es obligatoria."],
         trim: true,
     },
     fechaInicio: {

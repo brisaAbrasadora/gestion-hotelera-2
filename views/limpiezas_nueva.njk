@@ -3,9 +3,9 @@
 {% block titulo %}Insertar limpieza nueva{% endblock %}
 
 {% block contenido %}
-    <h1>Limpiezas de habitacion {{ habitacion.numero }}</h1>
+    <h1 class="fw-semibold">Limpiezas de habitacion {{ habitacion.numero }}</h1>
     <div class="row g-3 mx-5">
-        <form action="/limpiezas/{{ habitacion._id }}" method="post">
+        <form action="/limpiezas/{{ habitacion._id }}" method="post" autocomplete="off">
             <div class="form-group mb-3">
                 <label for="fecha" class="col-sm col-form label">Fecha de limpieza</label>
                 <div class="col-xl-6 col-lg-8">

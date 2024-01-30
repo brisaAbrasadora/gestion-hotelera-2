@@ -1,14 +1,30 @@
 {% extends "base.njk" %}
 
-{% block titulo %}Insertar nueva habitación{% endblock %}
+{% block titulo %}
+    {%if uri == "editar" %}
+        Editar habitacion
+    {% else %}
+        Insertar nueva habitación
+    {%endif%}
+{% endblock %}
 
 {% block contenido %}
-    <h1>Insertar nueva habitación</h1>
+    <h1>{%if uri == "editar" %}
+        Editar habitacion
+    {% else %}
+        Insertar nueva habitación
+    {%endif%}</h1>
     <div class="row g-3 mx-5">
         {% if errores.general %}
         <p class="alert alert-danger mb-0">{{ errores.general }}</p>
         {% endif %}
-        <form action="/habitaciones/nueva" method="post" enctype="multipart/form-data">
+        <form action="
+        {%if uri == "editar" %}
+            /habitaciones/editar/{{ habitacion.id }}
+        {% else %}
+            /habitaciones/nueva
+        {%endif%}"
+        method="post" enctype="multipart/form-data" autocomplete="off">
             <div class="form-group mb-3">
                 <label for="numero" class="col-sm-1 col-form label">Numero</label>
                 {% if errores.numero %}

@@ -13,9 +13,13 @@ router.get("/nueva/:id", async (req, res) => {
     );
     const fechaActual = new Date();
 
+    if (!habitacion) {
+        throw Error("Esta habitacion no existe.");
+      }
+
     res.render("limpiezas_nueva", { habitacion: habitacion, hoy: fechaActual });
   } catch (error) {
-    res.render("error", { error: error });
+    res.render("error", { error: error.message });
   }
 });
 
@@ -25,44 +29,44 @@ router.get("/:id", async (req, res) => {
     const limpiezas = await Limpieza.find({ idHabitacion: req.params.id }).sort(
       "-fechaHora"
     );
-    const numHabitacion = await Habitacion.findById(req.params.id).select(
+    const habitacion = await Habitacion.findById(req.params.id).select(
       "numero"
     );
 
-    // if (limpiezas.length == 0) {
-    //   throw Error("No hay limpiezas registradas para esa habitación");
-    // }
+    if (!habitacion) {
+      throw Error("Esta habitacion no existe.");
+    }
 
     res.render("limpiezas_listado", {
       limpiezas: limpiezas,
-      habitacion: numHabitacion,
+      habitacion: habitacion,
     });
   } catch (error) {
-    res.render("error", { error: error });
+    res.render("error", { error: error.message });
   }
 });
 
-// GET room cleaning
-router.get("/:id/estadolimpieza", async (req, res) => {
-  try {
-    const ultimaLimpieza = await Limpieza.find({ idHabitacion: req.params.id })
-      .sort("-fechaHora")
-      .limit(1);
+// // GET room cleaning
+// router.get("/:id/estadolimpieza", async (req, res) => {
+//   try {
+//     const ultimaLimpieza = await Limpieza.find({ idHabitacion: req.params.id })
+//       .sort("-fechaHora")
+//       .limit(1);
 
-    const fecha = ultimaLimpieza[0].fechaHora.toDateString();
-    const hoy = new Date().toDateString();
+//     const fecha = ultimaLimpieza[0].fechaHora.toDateString();
+//     const hoy = new Date().toDateString();
 
-    const estado = fecha === hoy ? "limpia" : "pendiente de limpieza";
-    res.status(200).send({ resultado: estado });
-  } catch (error) {
-    res
-      .status(400)
-      .send({
-        error: "Error obteniendo estado de limpieza",
-        mensaje: error.message,
-      });
-  }
-});
+//     const estado = fecha === hoy ? "limpia" : "pendiente de limpieza";
+//     res.status(200).send({ resultado: estado });
+//   } catch (error) {
+//     res
+//       .status(400)
+//       .send({
+//         error: "Error obteniendo estado de limpieza",
+//         mensaje: error.message,
+//       });
+//   }
+// });
 
 // POST new cleaning to a room
 router.post("/:id", async (req, res) => {
@@ -74,6 +78,7 @@ router.post("/:id", async (req, res) => {
     });
 
     limpiezaNueva.save().then(async () => {
+        console.log(req.headers.origin + "/habitaciones/" + req.params.id + "/ultimaLimpieza");
         await fetch(req.headers.origin + "/habitaciones/" + req.params.id + "/ultimaLimpieza", {
             method: 'PUT',
           });
