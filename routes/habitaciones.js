@@ -46,22 +46,32 @@ router.get("/:id", async (req, res) => {
 router.post("/nueva", upload.file.single('imagen'), (req, res) => {
     const opcionesTipo = Habitacion.schema.path("tipo").enumValues;
 
-    console.log(req.body.descripcion);
-
     let nuevaHab = new Habitacion({
         numero: req.body.numero,
         tipo: req.body.tipo,
         descripcion: req.body.descripcion,
         precio: req.body.precio,
     });
+
+    
     if (req.file)   nuevaHab.imagen = req.file.filename;
 
-    nuevaHab.save().then(() => {
+    nuevaHab.save().then((habitacion) => {
+        let limpiezaInicial = new Limpieza({
+            fechaHora: habitacion.ultimaLimpieza,
+            idHabitacion: habitacion._id,
+            observaciones: "Limpieza inicial",
+        });
+
+        limpiezaInicial.save();
+
         res.redirect(req.baseUrl);
     }).catch(error => {
-        const urlFichero = __dirname + "\\..\\public\\uploads\\" + req.file.filename;
+        if(req.file) {
+            const urlFichero = __dirname + "\\..\\public\\uploads\\" + req.file.filename;
 
-        if (fs.existsSync(urlFichero))  fs.unlinkSync(urlFichero);
+            if (fs.existsSync(urlFichero))  fs.unlinkSync(urlFichero);
+        }
 
         let errores = {
             general: "Error insertando la habitacion",
@@ -244,7 +254,7 @@ router.put("/:id/ultimalimpieza", async (req, res) => {
       { new: true, runValidators: true }
     );
 
-    res.status(200).send({ resultado: habActualizada });
+    res.redirect(req.baseUrl + "/" + req.params.id);
   } catch (error) {
     res.status(400).send({ error: "Error actualizando limpieza." });
   }

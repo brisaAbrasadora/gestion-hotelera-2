@@ -28,6 +28,7 @@ const habitacionSchema = new mongoose.Schema({
     },
     tipo: {
         type: String,
+        required: [true, "Debes seleccionar un tipo"],
         enum: {
             values: ["individual", "doble", "familiar", "suite"],
             message: "El tipo debe ser individual, doble, familiar o suite.",
