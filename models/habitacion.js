@@ -3,49 +3,56 @@ const mongoose = require("mongoose");
 const incidenciaSchema = new mongoose.Schema({
     descripcion: {
         type: String,
-        require: true,
+        required: [true, "La descripcion es obligatoria."],
         trim: true,
-        minlength: 1,
     },
     fechaInicio: {
         type: Date,
-        require: true,
+        required: [true, "La fecha de inicio de la incidencia es obligatoria"],
         default: new Date(),
     },
     fechaFin: {
         type: Date,
     },
+    imagen: {
+        type: String,
+    }
 });
 
 const habitacionSchema = new mongoose.Schema({
     numero : {
         type: Number,
-        require: true,
-        min: 1,
-        max: 100,
+        required: true,
+        min: [1, "El numero de habitacion no puede ser igual o inferior a 1."],
+        max: [100, "El numero de habitacion no puede ser igual o superior a 100."],
     },
     tipo: {
         type: String,
-        enum: ["individual", "doble", "familiar", "suite"],
+        enum: {
+            values: ["individual", "doble", "familiar", "suite"],
+            message: "El tipo debe ser individual, doble, familiar o suite.",
+        },        
     },
     descripcion: {
         type: String,
-        require: true,
-        minlength: 1,
+        required: [true, "La descripion de la habitacion es obligatoria."],
         trim: true,
     },
     ultimaLimpieza: {
         type: Date,
-        require: true,
+        required: [true, "La fecha de la ultima limpieza es obligatoria."],
         default: new Date(),
     },
     precio: {
         type: Number,
-        require: true,
-        min: 0,
-        max: 250,
+        required: [true, "El precio de la habitacion es obligatorio."],
+        min: [0, "El precio no puede ser igual o inferior a 0."],
+        max: [250, "El precio no puede ser igual o superior a 250."],
     },
     incidencias: [incidenciaSchema],
+    imagen: {
+        type: String,
+    }
 });
 
 const habitacion = mongoose.model("habitaciones", habitacionSchema);

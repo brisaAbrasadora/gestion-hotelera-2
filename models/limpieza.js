@@ -7,7 +7,7 @@ const limpiezaSchema = new Mongoose.Schema({
     },
     fechaHora : {
         type: Date,
-        require: true,
+        require: [true, "La fecha de la limpieza es obligatoria"],
         default: new Date(),
     },
     observaciones : {
