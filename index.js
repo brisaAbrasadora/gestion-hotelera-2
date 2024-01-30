@@ -29,6 +29,9 @@ app.set("view engine", "njk");
 
 // Middleware and routes load
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.use("/public", express.static("./public"));
 app.use(express.static(__dirname + "/node_modules/bootstrap/dist"));
 app.use("/habitaciones", habitaciones);
 app.use("/limpiezas", limpiezas);

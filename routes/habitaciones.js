@@ -1,4 +1,6 @@
 const express = require("express");
+const upload = require("../utils/upload.js");
+const fs = require("fs");
 
 const Habitacion = require("../models/habitacion");
 const Limpieza = require("../models/limpieza");
@@ -19,6 +21,12 @@ router.get("/", async (req, res) => {
   }
 });
 
+// GET the form
+router.get("/nueva", (req, res) => {
+    const opcionesTipo = Habitacion.schema.path("tipo").enumValues;
+    res.render("habitaciones_nueva", {opcionesTipo: opcionesTipo, uri: "/nueva"});
+});
+
 // GET a room
 router.get("/:id", async (req, res) => {
   try {
@@ -35,26 +43,43 @@ router.get("/:id", async (req, res) => {
 });
 
 // POST new room
-router.post("/", (req, res) => {
-  const habNueva = new Habitacion({
-    numero: req.body.numero,
-    tipo: req.body.tipo,
-    descripcion: req.body.descripcion,
-    ultimaLimpieza: req.body.ultimaLimpieza,
-    precio: req.body.precio,
-  });
+router.post("/nueva", upload.file.single('imagen'), (req, res) => {
+    const opcionesTipo = Habitacion.schema.path("tipo").enumValues;
 
-  habNueva
-    .save()
-    .then((habNueva) => {
-      res.status(200).send({
-        resultado: habNueva,
-      });
-    })
-    .catch((error) => {
-      res.status(400).send({
-        error: "Error insertando la habitacion"
-      });
+    console.log(req.body.descripcion);
+
+    let nuevaHab = new Habitacion({
+        numero: req.body.numero,
+        tipo: req.body.tipo,
+        descripcion: req.body.descripcion,
+        precio: req.body.precio,
+    });
+    if (req.file)   nuevaHab.imagen = req.file.filename;
+
+    nuevaHab.save().then(() => {
+        res.redirect(req.baseUrl);
+    }).catch(error => {
+        const urlFichero = __dirname + "\\..\\public\\uploads\\" + req.file.filename;
+
+        if (fs.existsSync(urlFichero))  fs.unlinkSync(urlFichero);
+
+        let errores = {
+            general: "Error insertando la habitacion",
+        };
+        if(error.errors.numero) {
+            errores.numero = error.errors.numero.message;
+        }
+        if(error.errors.tipo) {
+            errores.tipo = error.errors.tipo.message;
+        }
+        if(error.errors.descripcion) {
+            errores.descripcion = error.errors.descripcion.message;
+        }
+        if(error.errors.precio) {
+            errores.precio = error.errors.precio.message;
+        }
+
+        res.render("habitaciones_nueva", {opcionesTipo: opcionesTipo, errores: errores, habitacion: req.body});
     });
 });
 

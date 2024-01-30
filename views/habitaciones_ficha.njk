@@ -4,6 +4,11 @@
 
 {% block contenido %}
 <h1 class="fw-semibold">Ficha de habitación {{ habitacion.numero }}</h1>
+<div class="row mb-2">
+    <div class="col">
+        <img src="/public/uploads/{{ habitacion.imagen }}" class="" style="max-width: 25%;" />
+    </div>
+</div>
 <p>Tipo {{ habitacion.tipo }} - <span class="fw-bold">{{ habitacion.precio }} eur/noche</span></p>
 <p>{{ habitacion. descripcion }}</p>
 <h2 class="fw-semibold">Incidencias</h2>

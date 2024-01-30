@@ -22,7 +22,7 @@ const incidenciaSchema = new mongoose.Schema({
 const habitacionSchema = new mongoose.Schema({
     numero : {
         type: Number,
-        required: true,
+        required: [true, "El numero de habitacion es obligatorio."],
         min: [1, "El numero de habitacion no puede ser igual o inferior a 1."],
         max: [100, "El numero de habitacion no puede ser igual o superior a 100."],
     },
