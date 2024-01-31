@@ -78,7 +78,6 @@ router.post("/:id", async (req, res) => {
     });
 
     limpiezaNueva.save().then(async () => {
-        console.log(req.headers.origin + "/habitaciones/" + req.params.id + "/ultimaLimpieza");
         await fetch(req.headers.origin + "/habitaciones/" + req.params.id + "/ultimaLimpieza", {
             method: 'PUT',
           });

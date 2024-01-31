@@ -222,10 +222,6 @@ router.post("/borrar/:id", async (req, res) => {
       const resultado = await Limpieza.deleteMany({
         idHabitacion: req.params.id,
       });
-
-      console.log(`${resultado.deletedCount} limpiezas borradas`);
-    } else {
-      console.log("No documents found to delete");
     }
 
     await Habitacion.findByIdAndDelete({ _id: req.params.id }).then(() => {
@@ -247,8 +243,6 @@ router.post(
       };
 
       if (req.file) incidenciaNueva.imagen = req.file.filename;
-
-      console.log(incidenciaNueva);
 
       const habSeleccionada = await Habitacion.findById(req.params.id);
       const incidencias = habSeleccionada.incidencias;
@@ -281,7 +275,6 @@ router.post(
 // UPDATE incidence
 router.post("/:idH/incidencias/:idI", async (req, res) => {
   try {
-    console.log(req.params);
     const hab = await Habitacion.findById(req.params.idH);
 
     if (hab.incidencias.length < 1) {
@@ -341,7 +334,7 @@ router.put("/:id/ultimalimpieza", async (req, res) => {
       },
       { new: true, runValidators: true }
     );
-    console.log(req.baseUrl + "/" + req.params.id);
+    
     res.redirect(req.baseUrl + "/" + req.params.id);
   } catch (error) {
     res.status(400).send({ error: "Error actualizando limpieza." });
