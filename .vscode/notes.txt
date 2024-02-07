@@ -1,3 +1,0 @@
-## 30/01/2024 17:44
-
-Duda: Si no hay habitaciones se considera un error?
