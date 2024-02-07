@@ -4,7 +4,9 @@
     <h1 class="fw-semibold">Limpiezas de habitación {{ habitacion.numero }}</h1>
     <div class="row g-2 mb-2">
         <div class="col">
+            {% if session and session.usuario %}
             <a href="/limpiezas/nueva/{{ habitacion.id }}" class="btn btn-primary">Nueva limpieza</a>
+            {% endif %}
             <a href="/habitaciones/{{ habitacion.id }}" class="btn btn-secondary">Volver</a>
         </div>
     </div>

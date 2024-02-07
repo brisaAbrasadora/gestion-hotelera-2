@@ -13,6 +13,14 @@ const usuarioSchema = new mongoose.Schema({
         trim: true,
         minlength: [7, "La contraseña debe tener al menos 7 caracteres."],
     },
+    role: {
+        type: String,
+        required: [true, "El rol no puede estar vacio"],
+        enum: {
+            values: ["admin", "miembro"],
+            message: "El rol puede ser administrador o miembro.",
+        },        
+    },
 });
 
 const Usuario = mongoose.model("usuarios", usuarioSchema);

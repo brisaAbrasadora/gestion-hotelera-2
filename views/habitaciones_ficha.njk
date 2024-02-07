@@ -13,11 +13,14 @@
         <span class="fw-bold">{{ habitacion.precio }} eur/noche</span>
     </p>
     <p>{{ habitacion. descripcion }}</p>
+    {% if session and session.usuario %}
     <form action="/habitaciones/borrar/{{ habitacion.id }}" method="post" class="form-group d-inline">
         <button type="submit" class="btn btn-danger mb-3">Borrar habitacion</button>
     </form>
     <a href="/habitaciones/editar/{{ habitacion.id }}" class="btn btn-warning mb-3">Editar habitacion</a>
+    {% endif %}
     <h2 class="fw-semibold">Incidencias</h2>
+    {% if session and session.usuario %}
     <h4 class="fw-semibold">Nueva incidencia</h4>
     <div class="row g-3">
         <form
@@ -42,6 +45,7 @@
             </div>
         </form>
     </div>
+    {% endif %}
     <div class="row g-2 mb-2">
         {% for incidencia in habitacion.incidencias %}
             <div class="col-12">
@@ -53,9 +57,11 @@
                         {% if incidencia.fechaFin %}
                             <p class="text-success fst-italic mt-3">Cerrada el {{ incidencia.fechaFin | date("DD/MM/YYYY") }}</p>
                         {% else %}
+                            {% if session and session.usuario %}
                             <form action="/habitaciones/{{ habitacion.id }}/incidencias/{{ incidencia.id }}" class="form-group" method="POST">
                                 <button type="submit" class="btn btn-danger mt-3">Cerrar</button>
                             </form>
+                            {% endif %}
                         {% endif %}
                     </div>
                 </div>

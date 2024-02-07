@@ -7,6 +7,16 @@ const Limpieza = require("../models/limpieza");
 
 const router = express.Router();
 
+const autenticacion = (req, res, next) => {
+    if (req.session && req.session.usuario) {
+        return next();
+    } else 
+        res.render("login", {
+            uri: "/login",
+            error: "Necesitas estar logueado para entrar ahi."
+        });
+}
+
 // GET all rooms
 router.get("/", async (req, res) => {
   try {
@@ -25,7 +35,7 @@ router.get("/", async (req, res) => {
 });
 
 // GET the form
-router.get("/nueva", (req, res) => {
+router.get("/nueva", autenticacion, (req, res) => {
   const opcionesTipo = Habitacion.schema.path("tipo").enumValues;
   res.render("habitaciones_nueva", {
     opcionesTipo: opcionesTipo,
@@ -49,7 +59,7 @@ router.get("/:id", async (req, res) => {
 });
 
 // POST new room
-router.post("/nueva", upload.file.single("imagen"), (req, res) => {
+router.post("/nueva", autenticacion, upload.file.single("imagen"), (req, res) => {
   const opcionesTipo = Habitacion.schema.path("tipo").enumValues;
 
   let nuevaHab = new Habitacion({
@@ -106,40 +116,8 @@ router.post("/nueva", upload.file.single("imagen"), (req, res) => {
     });
 });
 
-// // UPDATE new and latest cleaning of every room
-// router.put("/ultimaLimpieza", async (req, res) => {
-//   try {
-//     const habitaciones = await Habitacion.find();
-
-//     if (habitaciones && habitaciones.length > 0) {
-//       for (const hab of habitaciones) {
-//         const ultimaLimpieza = await Limpieza.find({ idHabitacion: hab._id })
-//           .sort("-fechaHora")
-//           .limit(1);
-
-//         if (ultimaLimpieza && ultimaLimpieza.length > 0) {
-//           await Habitacion.findByIdAndUpdate(
-//             hab.id,
-//             {
-//               $set: { ultimaLimpieza: ultimaLimpieza[0].fechaHora },
-//               $inc: { __v: 1 },
-//             },
-//             { runValidators: true }
-//           );
-//         }
-//       }
-//       const habitacionesActualizadas = await Habitacion.find();
-//       res.status(200).send({ resultado: habitacionesActualizadas });
-//     } else {
-//       throw error;
-//     }
-//   } catch (error) {
-//     res.status(400).send({ error: "Error actualizando limpieza" });
-//   }
-// });
-
 // GET edit form
-router.get("/editar/:id", (req, res) => {
+router.get("/editar/:id", autenticacion, (req, res) => {
   const opcionesTipo = Habitacion.schema.path("tipo").enumValues;
   Habitacion.findById(req.params["id"])
     .then((habitacion) => {
@@ -155,7 +133,7 @@ router.get("/editar/:id", (req, res) => {
 });
 
 // UPDATE a room
-router.post("/editar/:id", upload.file.single("imagen"), (req, res) => {
+router.post("/editar/:id", autenticacion, upload.file.single("imagen"), (req, res) => {
     const opcionesTipo = Habitacion.schema.path("tipo").enumValues;
     Habitacion.findById(req.params.id)
     .then((hab) => {
@@ -214,7 +192,7 @@ router.post("/editar/:id", upload.file.single("imagen"), (req, res) => {
 });
 
 // DELETE a room
-router.post("/borrar/:id", async (req, res) => {
+router.post("/borrar/:id", autenticacion, async (req, res) => {
   try {
     const limpiezas = await Limpieza.find({ idHabitacion: req.params.id });
 
@@ -235,6 +213,7 @@ router.post("/borrar/:id", async (req, res) => {
 // POST a new incidence
 router.post(
   "/:id/incidencias",
+  autenticacion,
   upload.file.single("imagen"),
   async (req, res) => {
     try {
@@ -273,7 +252,7 @@ router.post(
 );
 
 // UPDATE incidence
-router.post("/:idH/incidencias/:idI", async (req, res) => {
+router.post("/:idH/incidencias/:idI", autenticacion, async (req, res) => {
   try {
     const hab = await Habitacion.findById(req.params.idH);
 
@@ -312,32 +291,6 @@ router.post("/:idH/incidencias/:idI", async (req, res) => {
     let error = "Incidencia no encontrada";
 
     res.render("error", { error: error });
-  }
-});
-
-// UPDATE latest cleaning of a room
-router.put("/:id/ultimalimpieza", async (req, res) => {
-  try {
-    const ultimaLimpieza = await Limpieza.find({ idHabitacion: req.params.id })
-      .sort("-fechaHora")
-      .limit(1);
-
-    if (ultimaLimpieza.length === 0) {
-      throw Error;
-    }
-
-    await Habitacion.findByIdAndUpdate(
-      req.params.id,
-      {
-        $set: { ultimaLimpieza: ultimaLimpieza[0].fechaHora },
-        $inc: { __v: 1 },
-      },
-      { new: true, runValidators: true }
-    );
-    
-    res.redirect(req.baseUrl + "/" + req.params.id);
-  } catch (error) {
-    res.status(400).send({ error: "Error actualizando limpieza." });
   }
 });
 
