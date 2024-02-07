@@ -35,7 +35,7 @@ router.get('/logout', (req, res) => {
 });
 
 
-// carga de datos
+// Carga de datos
 router.get("/carga",  (req, res) => {
 
         const usuarioAdmin = new Usuario({
