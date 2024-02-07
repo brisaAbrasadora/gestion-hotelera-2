@@ -8,10 +8,7 @@ const router = express.Router();
 
 const autenticacion = (req, res, next) => {
     if (req.session && req.session.usuario) {
-        res.render("login", {
-            uri: "/login",
-            error: "Necesitas estar logueado para entrar ahi."
-        });
+        res.redirect("/");
     } else {
         return next();
     }
