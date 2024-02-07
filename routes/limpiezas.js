@@ -5,8 +5,18 @@ const Habitacion = require("../models/habitacion");
 
 const router = express.Router();
 
+const autenticacion = (req, res, next) => {
+    if (req.session && req.session.usuario) {
+        return next();
+    } else 
+        res.render("login", {
+            uri: "/login",
+            error: "Necesitas estar logueado para entrar ahi."
+        });
+}
+
 // GET form
-router.get("/nueva/:id", async (req, res) => {
+router.get("/nueva/:id", autenticacion, async (req, res) => {
   try {
     const habitacion = await Habitacion.findById(req.params.id).select(
       "numero"
@@ -47,7 +57,7 @@ router.get("/:id", async (req, res) => {
 });
 
 // POST new cleaning to a room
-router.post("/:id", async (req, res) => {
+router.post("/:id", autenticacion, async (req, res) => {
   try {
     const limpiezaNueva = new Limpieza({
       idHabitacion: req.params.id,

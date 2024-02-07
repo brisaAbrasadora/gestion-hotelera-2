@@ -21,14 +21,10 @@ const autenticacion = (req, res, next) => {
 router.get("/", async (req, res) => {
   try {
     const habitaciones = await Habitacion.find();
-    if (habitaciones.length > 0) {
-      res.render("habitaciones_listado", {
+    res.render("habitaciones_listado", {
         habitaciones: habitaciones,
         uri: "/habitaciones",
-      });
-    } else {
-      throw Error("No hay habitaciones");
-    }
+    });
   } catch (error) {
     res.render("error", { error: error });
   }
