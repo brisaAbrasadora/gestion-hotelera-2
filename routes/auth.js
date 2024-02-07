@@ -8,24 +8,25 @@ const router = express.Router();
 
 const autenticacion = (req, res, next) => {
     if (req.session && req.session.usuario) {
-        return next();
-    } else 
         res.render("login", {
             uri: "/login",
             error: "Necesitas estar logueado para entrar ahi."
         });
+    } else {
+        return next();
+    }
 }
 
 
 // GET login form
-router.get("/login", (req, res) => {
+router.get("/login", autenticacion, (req, res) => {
     res.render("login", {
         uri: "/login",
     });
 });
 
 // POST login a user
-router.post("/login", async (req, res) => {
+router.post("/login", autenticacion, async (req, res) => {
     const visitante = new Usuario({
         login: req.body.username,
         password: req.body.password,
