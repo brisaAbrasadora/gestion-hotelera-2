@@ -3,6 +3,7 @@ const express = require("express");
 const nunjucks = require("nunjucks");
 const dateFilter = require("nunjucks-date-filter");
 const session = require("express-session");
+const os = require("os");
 
 require("dotenv").config();
 
@@ -12,7 +13,12 @@ const limpiezas = require("./routes/limpiezas");
 const auth = require("./routes/auth");
 
 // Connection to DB
-mongoose.connect(process.env.URL_BBDD);
+if (os.homedir().includes("/home/debian/")) {
+    mongoose.connect(process.env.URL_BBDD);
+} else {
+    mongoose.connect(process.env.URL_LOCAL);
+}
+
 
 // Run Express
 const app = express();

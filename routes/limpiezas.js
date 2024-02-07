@@ -59,9 +59,22 @@ router.get("/:id", async (req, res) => {
 // POST new cleaning to a room
 router.post("/:id", autenticacion, async (req, res) => {
   try {
+    const fechaRecibida = req.body.fecha;
+    const fecha = new Date(fechaRecibida);
+    const horaActual = new Date();
+    const momentoExacto = new Date(
+        fecha.getFullYear(),
+        fecha.getMonth(),
+        fecha.getDate(),
+        horaActual.getHours(),
+        horaActual.getMinutes(),
+        horaActual.getSeconds()
+    );
+
+    console.log(fechaRecibida);
     const limpiezaNueva = new Limpieza({
       idHabitacion: req.params.id,
-      fechaHora: req.body.fecha,
+      fechaHora: momentoExacto,
       observaciones: req.body.observaciones,
     });
 
