@@ -48,4 +48,56 @@ router.get('/logout', (req, res) => {
 });
 
 
+// Carga de datos
+router.get("/admin",  (req, res) => {
+
+        const usuarioAdmin = new Usuario({
+            login: "admin",
+            password: "adminNode",
+            role: "admin",
+        });
+
+        usuarioAdmin.save().then((resultado) => {
+            console.log("Carga exitosa del usuario administrador a la BBDD:\n",
+            resultado);
+            res.redirect("/");
+        }).catch((error) => {
+            res.render("error", {error: error.message});
+        });
+});
+
+router.get("/cargaInicial", async (req, res) => {
+    try {
+        let totalDocumentos = 0;
+        const colecciones = await database.db.listCollections().toArray();
+        for (const { name } of colecciones) {
+            const modelo = mongoose.model(name);
+            const ocurrencias = await modelo.countDocuments();
+            totalDocumentos += ocurrencias;
+        }
+        
+        if (totalDocumentos === 0) {
+            
+        } else {
+            throw Error("Borra todos los datos yendo a auth/delete para insertar otra carga inicial.")
+        }
+    } catch (error) {
+        res.render("error", {error: error.message});
+    };
+})
+
+router.get("/delete", autenticacion, async (req, res) => {
+    try {
+        const colecciones = await database.db.listCollections().toArray();
+        for (const { name } of colecciones) {
+            const modelo = mongoose.model(name);
+            await modelo.deleteMany();
+        }
+        console.log("Todos los documentos han sido eliminados.")
+        res.redirect("/");
+    } catch (error) {
+        res.render("error", {error: error.message});
+    }
+})
+
 module.exports = router;
