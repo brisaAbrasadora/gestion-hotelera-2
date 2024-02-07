@@ -1,8 +1,21 @@
 const express = require("express");
+const mongoose = require("mongoose");
 
 const Usuario = require("../models/usuario");
+const database = mongoose.connection;
 
 const router = express.Router();
+
+const autenticacion = (req, res, next) => {
+    if (req.session && req.session.usuario) {
+        return next();
+    } else 
+        res.render("login", {
+            uri: "/login",
+            error: "Necesitas estar logueado para entrar ahi."
+        });
+}
+
 
 // GET login form
 router.get("/login", (req, res) => {
@@ -34,24 +47,5 @@ router.get('/logout', (req, res) => {
     res.redirect('/');
 });
 
-
-// Carga de datos
-router.get("/carga",  (req, res) => {
-
-        const usuarioAdmin = new Usuario({
-            login: "admin",
-            password: "adminNode",
-            role: "admin",
-        });
-
-        usuarioAdmin.save().then((resultado) => {
-            console.log("Carga exitosa del usuario administrador a la BBDD:\n",
-            resultado);
-            res.redirect("/");
-        }).catch((error) => {
-            res.status(400).send({error: "Error cargando el usuario",
-        mensaje: error.message})
-        });
-});
 
 module.exports = router;
