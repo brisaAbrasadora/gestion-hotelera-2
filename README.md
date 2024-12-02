@@ -1,4 +1,4 @@
-# Gestion Hotelera
+# Hotel manager
 ![Static Badge](https://img.shields.io/badge/School-project-violet)
 ![Static Badge](https://img.shields.io/badge/Express.js-grey)
 ![Static Badge](https://img.shields.io/badge/Nunjucks-grey)
